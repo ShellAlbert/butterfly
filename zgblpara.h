@@ -11,6 +11,11 @@ public:
 public:
     //global request to exit flag.
     bool m_bGblRst2ExitFlag;
+
+    //counter for captured image.
+    qint64 m_nCntLft;
+    qint64 m_nCntRht;
+
 private:
 };
 extern ZGblPara gGblPara;

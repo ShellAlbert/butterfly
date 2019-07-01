@@ -3,6 +3,10 @@
 ZGblPara::ZGblPara()
 {
     this->m_bGblRst2ExitFlag=false;
+
+    //reset counter to zero.
+    this->m_nCntLft=0;
+    this->m_nCntRht=0;
 }
 ZGblPara gGblPara;
 cv::Mat QImage2cvMat(const QImage &img)

@@ -12,12 +12,13 @@ extern "C"
 int main(int argc, char *argv[])
 {
     ZMainUI *win;
-    ZRtspThread *rtsp1;
+    ZRtspThread *rtsp[2];
     ZUSBThread *usb;
 
     QApplication app(argc, argv);
-    rtsp1=new ZRtspThread("");
-    usb=new ZUSBThread("/dev/video1");
+    rtsp[0]=new ZRtspThread("192.168.137.10");
+    rtsp[1]=new ZRtspThread("192.168.137.12");
+    //usb=new ZUSBThread("/dev/video1");
     win=new ZMainUI;
     if(win->ZDoInit()<0)
     {
@@ -25,14 +26,15 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-
-    QObject::connect(rtsp1,SIGNAL(ZSigNewImg(QImage)),win->ZGetDispUI(0),SLOT(ZSlotFlushImg(QImage)));
-    QObject::connect(usb,SIGNAL(ZSigNewImg(QImage)),win->ZGetDispUI(1),SLOT(ZSlotFlushImg(QImage)));
+    QObject::connect(rtsp[0],SIGNAL(ZSigNewImg(QImage)),win->ZGetDispUI(0),SLOT(ZSlotFlushImg(QImage)));
+    //QObject::connect(usb,SIGNAL(ZSigNewImg(QImage)),win->ZGetDispUI(1),SLOT(ZSlotFlushImg(QImage)));
+    QObject::connect(rtsp[1],SIGNAL(ZSigNewImg(QImage)),win->ZGetDispUI(2),SLOT(ZSlotFlushImg(QImage)));
     //win->show();
     //win->showMaximized();
     win->showFullScreen();
-    rtsp1->start();
-    usb->start();
+    rtsp[1]->start();
+    rtsp[0]->start();
+    //usb->start();
     return app.exec();
 //    std::string gstreamer_pipe="rtspsrc location=\"rtsp://192.168.137.10:554/user=admin&password=&channel=1&stream=0.sdp\" ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw,width=1920,height=1080,format=BGRx ! videoconvert ! appsink";
 //    cv::VideoCapture cap(gstreamer_pipe,cv::CAP_GSTREAMER);

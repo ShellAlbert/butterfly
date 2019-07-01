@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
 #include <ui/zimgdispui.h>
 class ZMainUI : public QWidget
 {
@@ -17,9 +19,12 @@ public:
 
     ZImgDispUI* ZGetDispUI(qint32 index);
 private:
-    ZImgDispUI *m_UIMain;
-    ZImgDispUI *m_UIAux;
+    QLabel *m_llTop;//top label.
+    ZImgDispUI *m_UILft;//the left main camera.
+    ZImgDispUI *m_UIRht;//the right aux camera.
+    ZImgDispUI *m_UIMid;//the middle distance-measure view.
     QHBoxLayout *m_hLayout;
+    QVBoxLayout *m_vLayout;
 };
 
 #endif // ZMAINUI_H

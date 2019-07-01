@@ -1,11 +1,12 @@
 #include "zmainui.h"
 #include <QDebug>
-ZMainUI::ZMainUI(QWidget *parent)
-    : QWidget(parent)
+ZMainUI::ZMainUI(QWidget *parent):QWidget(parent)
 {
-    this->m_UIMain=NULL;
-    this->m_UIAux=NULL;
+    this->m_UILft=NULL;
+    this->m_UIRht=NULL;
+    this->m_UIMid=NULL;
     this->m_hLayout=NULL;
+    this->m_vLayout=NULL;
 }
 
 ZMainUI::~ZMainUI()
@@ -17,10 +18,13 @@ ZImgDispUI* ZMainUI::ZGetDispUI(qint32 index)
     switch(index)
     {
     case 0:
-        return this->m_UIMain;
+        return this->m_UILft;
         break;
     case 1:
-        return this->m_UIAux;
+        return this->m_UIMid;
+        break;
+    case 2:
+        return this->m_UIRht;
         break;
     default:
         break;
@@ -30,43 +34,64 @@ ZImgDispUI* ZMainUI::ZGetDispUI(qint32 index)
 qint32 ZMainUI::ZDoInit()
 {
     try{
-        this->m_UIMain=new ZImgDispUI;
-        this->m_UIAux=new ZImgDispUI;
+        this->m_llTop=new QLabel;
+        this->m_UILft=new ZImgDispUI("MAIN");
+        this->m_UIRht=new ZImgDispUI("AUX");
+        this->m_UIMid=new ZImgDispUI("FULL");
         this->m_hLayout=new QHBoxLayout;
+        this->m_vLayout=new QVBoxLayout;
     }catch(...)
     {
         qDebug()<<"<error>:new failed,low memory.";
         return -1;
     }
 
-    if(this->m_UIMain->ZDoInit()<0)
+    if(this->m_UILft->ZDoInit()<0)
     {
         return -1;
     }
-    if(this->m_UIAux->ZDoInit()<0)
+    if(this->m_UIRht->ZDoInit()<0)
     {
         return -1;
     }
-
-    this->m_hLayout->addWidget(this->m_UIMain);
-    this->m_hLayout->addWidget(this->m_UIAux);
-    this->setLayout(this->m_hLayout);
+    if(this->m_UIMid->ZDoInit()<0)
+    {
+        return -1;
+    }
+    this->m_hLayout->addWidget(this->m_UILft);
+    this->m_hLayout->addWidget(this->m_UIMid);
+    this->m_hLayout->addWidget(this->m_UIRht);
+    this->m_vLayout->addLayout(this->m_hLayout);
+    this->m_vLayout->addWidget(this->m_llTop);
+    this->setLayout(this->m_vLayout);
 
     return 0;
 }
 qint32 ZMainUI::ZDoClean()
 {
-    if(this->m_UIMain)
+    if(this->m_llTop)
     {
-        delete this->m_UIMain;
+        delete this->m_llTop;
     }
-    if(this->m_UIAux)
+    if(this->m_UILft)
     {
-        delete this->m_UIAux;
+        delete this->m_UILft;
+    }
+    if(this->m_UIMid)
+    {
+        delete this->m_UIMid;
+    }
+    if(this->m_UIRht)
+    {
+        delete this->m_UIRht;
     }
     if(this->m_hLayout)
     {
         delete this->m_hLayout;
+    }
+    if(this->m_vLayout)
+    {
+        delete this->m_vLayout;
     }
     return 0;
 }

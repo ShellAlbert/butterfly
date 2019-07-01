@@ -12,9 +12,12 @@ ZRtspThread::ZRtspThread(QString rtspAddr)
 }
 void ZRtspThread::run()
 {
-    std::string gstreamer_pipe="rtspsrc location=\"rtsp://192.168.137.10:554/user=admin&password=&channel=1&stream=0.sdp\" ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw,width=1920,height=1080,format=BGRx ! videoconvert ! appsink";
+    QString rtspAddr=QString("rtspsrc location=\"rtsp://%1:554/user=admin&password=&channel=1&stream=0.sdp\"").arg(this->m_rtspAddr);
+    rtspAddr.append(" ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw,width=1920,height=1080,format=BGRx ! videoconvert ! appsink");
+    qDebug()<<rtspAddr;
+    //std::string gstreamer_pipe="rtspsrc location=\"rtsp://192.168.137.10:554/user=admin&password=&channel=1&stream=0.sdp\" ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw,width=1920,height=1080,format=BGRx ! videoconvert ! appsink";
     //std::string gstreamer_pipe="rtspsrc location=\"rtsp://192.168.1.89:554/user=admin&password=&channel=1&stream=0.sdp\" ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw,width=1920,height=1080,format=BGRx ! videoconvert ! appsink";
-    cv::VideoCapture cap(gstreamer_pipe,cv::CAP_GSTREAMER);
+    cv::VideoCapture cap(rtspAddr.toStdString(),cv::CAP_GSTREAMER);
     if(!cap.isOpened())
     {
         qDebug()<<"failed to open rtsp!";
@@ -30,7 +33,7 @@ void ZRtspThread::run()
             qDebug()<<"error to read img";
             break;
         }
-        qDebug()<<"read img okay"<<mat.cols<<mat.rows<<mat.depth()<<mat.channels();
+        qDebug()<<this->m_rtspAddr<<"read img okay"<<mat.cols<<mat.rows<<mat.depth()<<mat.channels();
         QImage img=cvMat2QImage(mat);
         emit this->ZSigNewImg(img);
     }

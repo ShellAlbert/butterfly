@@ -6,7 +6,7 @@ class ZImgDispUI : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ZImgDispUI(QWidget *parent = nullptr);
+    explicit ZImgDispUI(QString title,QWidget *parent = nullptr);
     ~ZImgDispUI();
 public:
     qint32 ZDoInit();
@@ -17,6 +17,8 @@ public slots:
     void ZSlotFlushImg(const QImage &img);
 private:
     QImage m_img;
+    QString m_title;
+    qint64 m_counter;
 };
 
 #endif // ZIMGDISPUI_H
