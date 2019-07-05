@@ -31,14 +31,16 @@ SOURCES += \
     video/zrtspthread.cpp \
     video/zusbthread.cpp \
     ui/zimgdispui.cpp  \
-    ui/zmainui.cpp
+    ui/zmainui.cpp \
+    video/zimgprocthread.cpp
 
 HEADERS += \
     zgblpara.h \
     video/zrtspthread.h \
     video/zusbthread.h \
     ui/zimgdispui.h \
-    ui/zmainui.h
+    ui/zmainui.h \
+    video/zimgprocthread.h
 
 INCLUDEPATH += /usr/include/gstreamer-1.0
 INCLUDEPATH += /usr/include/glib-2.0
