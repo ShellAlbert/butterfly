@@ -112,8 +112,8 @@ void ZUSBThread::run()
     fmt.type=V4L2_BUF_TYPE_VIDEO_CAPTURE;
     fmt.fmt.pix.pixelformat=V4L2_PIX_FMT_YUYV;
     fmt.fmt.pix.field=V4L2_FIELD_INTERLACED;
-    fmt.fmt.pix.width=1280;
-    fmt.fmt.pix.height=720;
+    fmt.fmt.pix.width=640;
+    fmt.fmt.pix.height=480;
     if(ioctl(fd,VIDIOC_S_FMT,&fmt)<0)
     {
         qDebug()<<"failed to set format.";
@@ -403,8 +403,8 @@ void ZUSBThread::run()
 
             //process_image((void*)buf.m.userptr);
 
-            gpuConvertYUYVtoRGB((unsigned char*)buffers[getBuf.index].start,cuda_out_buffer,1280,720);
-            QImage img((uchar*)cuda_out_buffer,1280,720,1280*3,QImage::Format_RGB888);
+            gpuConvertYUYVtoRGB((unsigned char*)buffers[getBuf.index].start,cuda_out_buffer,640,480);
+            QImage img((uchar*)cuda_out_buffer,640,480,640*3,QImage::Format_RGB888);
             emit this->ZSigNewImg(img);
             if(this->ZIoctl(fd,VIDIOC_QBUF,&getBuf)<0)
             {

@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
     //win->show();
     //win->showMaximized();
     win->showFullScreen();
-    rtsp[1]->start();
     rtsp[0]->start();
+    rtsp[1]->start();
     //usb->start();
     return app.exec();
 //    std::string gstreamer_pipe="rtspsrc location=\"rtsp://192.168.137.10:554/user=admin&password=&channel=1&stream=0.sdp\" ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw,width=1920,height=1080,format=BGRx ! videoconvert ! appsink";
